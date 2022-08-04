@@ -44,16 +44,16 @@ dir.create(projectFolder,   recursive = T)
 setwd(projectFolder)
                                                                                               
 # Download the lock file:
-download.file("https://raw.githubusercontent.com/ohdsi-studies/SkeletonPredictionStudy/master/renv.lock", "renv.lock")
+download.file("https://raw.githubusercontent.com/ohdsi-studies/lungCancerPrognostic/master/renv.lock", "renv.lock")
 
 # Build the local library into projectFolder (takes a while):
 renv::init()
 
 # (When not in RStudio, you'll need to restart R now)
 
-# finally install the SkeletonPredictionStudy package
+# finally install the lungCancerPrognostic package
 install.packages('devtools')
-devtools::install_github('ohdsi-studies/SkeletonPredictionStudy')
+devtools::install_github('ohdsi-studies/lungCancerPrognostic')
 
 library(SkeletonPredictionStudy)
 ````                                                                                                 
@@ -98,7 +98,7 @@ You can also browse the package documentation online at https://rstudio.github.i
 You can safely continue by pressing 'y' after this prompt since the renv.lock file is downloaded from the **SkeletonPredictionStudy** GitHub code repository. Once the installation is complete, you may need to restart R (if you are working outside of RStudio) and you should see this message:
 
 ````
-Project 'C:/SkeletonPredictionStudy' loaded. [renv 0.x.y]
+Project 'C:/lungCancerPrognostic' loaded. [renv 0.x.y]
 ````
 
 Now the study package is installed and ready to execute! 
