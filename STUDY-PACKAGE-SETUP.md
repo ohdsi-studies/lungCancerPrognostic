@@ -37,7 +37,7 @@ install.packages("renv")
 
 # You need to specify a project folder for the renv (the study specific environment will be 
 # save here) and you need to set you R working direcory to this location before running renv
-projectFolder <- "C:/SkeletonPredictionStudy"
+projectFolder <- "C:/lungCancerPrognostic"
 if(!dir.exists(projectFolder)){
 dir.create(projectFolder,   recursive = T)
 }
@@ -55,7 +55,7 @@ renv::init()
 install.packages('devtools')
 devtools::install_github('ohdsi-studies/lungCancerPrognostic')
 
-library(SkeletonPredictionStudy)
+library(lungCancerPrognostic)
 ````                                                                                                 
 # -------------------------------------------------------------
 # What to expect
