@@ -6,8 +6,8 @@ Lung Cancer Prognostic
 - Analytics use case(s): **Patient-Level Prediction**
 - Study type: **Clinical Application**
 - Tags: **PatientLevelPrediction**
-- Study lead: **add name**
-- Study lead forums tag: **[add_username](https://forums.ohdsi.org/u/add_username)**
+- Study lead: **Urmila Chandran, Jenna Reps**
+- Study lead forums tag: **[jreps](https://forums.ohdsi.org/u/jreps)**
 - Study start date: **2020**
 - Study end date: **Aug 2022**
 - Protocol: **-**
