@@ -7,7 +7,6 @@
 execute(
   databaseDetails,
   outputFolder,
-  createProtocol = F,
   createCohorts = F,
   runDiagnostic = F,
   viewDiagnostic = F,
@@ -30,8 +29,6 @@ execute(
 \item{outputFolder}{Name of local folder to place results; make sure to use forward slashes
 (/). Do not use a folder on a network drive since this greatly impacts
 performance.}
-
-\item{createProtocol}{Creates a protocol based on the analyses specification}
 
 \item{createCohorts}{Create the cohortTable table with the target population and outcome cohorts?}
 
@@ -67,7 +64,7 @@ in packaged results.}
 Execute the Study
 }
 \details{
-This function executes the SkeletonPredictionStudy Study.
+This function executes the LungCancerPoster Study.
 }
 \examples{
 \dontrun{
@@ -96,7 +93,6 @@ connectionDetails <- createConnectionDetails(dbms = "postgresql",
 
 execute(databaseDetails = databaseDetails,
         outputFolder = "c:/temp/study_results", 
-        createProtocol = T,
         createCohorts = T,
         runDiagnostic = F,
         viewDiagnostic = F,

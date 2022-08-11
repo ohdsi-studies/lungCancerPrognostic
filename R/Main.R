@@ -23,7 +23,6 @@
 #' @param outputFolder         Name of local folder to place results; make sure to use forward slashes
 #'                             (/). Do not use a folder on a network drive since this greatly impacts
 #'                             performance.
-#' @param createProtocol       Creates a protocol based on the analyses specification                             
 #' @param createCohorts        Create the cohortTable table with the target population and outcome cohorts?
 #' @param runDiagnostic        Runs a diagnostic of the T, O and tar settings for the cdmDatabaseSchema - can be used to check whether to change 
 #'                             settings or whether the prediction may not do well.  
@@ -68,7 +67,6 @@
 #'
 #' execute(databaseDetails = databaseDetails,
 #'         outputFolder = "c:/temp/study_results", 
-#'         createProtocol = T,
 #'         createCohorts = T,
 #'         runDiagnostic = F,
 #'         viewDiagnostic = F,
@@ -88,7 +86,6 @@
 execute <- function(
   databaseDetails,
   outputFolder,
-  createProtocol = F,
   createCohorts = F,
   runDiagnostic = F,
   viewDiagnostic = F,
@@ -109,11 +106,7 @@ execute <- function(
     dir.create(outputFolder, recursive = TRUE)
   
   ParallelLogger::addDefaultFileLogger(file.path(outputFolder, "log.txt"))
-  
-  if(createProtocol){
-    ensure_installed('officer')
-    createPlpProtocol(predictionAnalysisListFile = NULL, outputLocation = outputFolder)
-  }
+
   
   if (createCohorts) {
     ParallelLogger::logInfo("Creating cohorts")
@@ -135,7 +128,10 @@ execute <- function(
       package = "LungCancerPrognostic")
     
     predictionAnalysisList <- tryCatch(
-      {PatientLevelPrediction::loadPlpAnalysesJson(file.path(predictionAnalysisListFile))},
+      {
+        jf <- readChar(predictionAnalysisListFile, file.info(predictionAnalysisListFile)$size)
+        jsonlite::unserializeJSON(jf)
+      },
       error= function(cond) {
         ParallelLogger::logInfo('Issue when loading json file...');
         ParallelLogger::logError(cond)
