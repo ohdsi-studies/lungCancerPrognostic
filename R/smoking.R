@@ -15,7 +15,22 @@ createSmokingSettings <-function(
   
 }
   
-
+#' Smoking variable
+#'
+#' @details
+#' This will apply the model to new data and estimate the performance
+#'
+#' @param oracleTempSchema   bla bla
+#' @param cdmDatabaseSchema  bla bla
+#' @param cohortTable        bla bla
+#' @param cohortId           bla bla
+#' @param cdmVersion         bla bla
+#' @param rowIdField         bla bla
+#' @param covariateSettings  bla bla
+#' @param aggregated         bla bla
+#'                                                 
+#'
+#' @export
 getSmokingCovariateData <- function(connection,
   oracleTempSchema = NULL,
   cdmDatabaseSchema,
