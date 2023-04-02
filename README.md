@@ -22,11 +22,134 @@ Suggested Requirements
 - Java runtime environment
 - Python
 
-Instructions to Install and Execute from GitHub
-========================================================
+## Code to Install
 
-- [Instructions to install the study library from GitHub using Renv (recommended)](STUDY-PACKAGE-SETUP.md)
-- [Instructions to execute the study ](STUDY-PACKAGE-EXECUTE.md)
+To install Strategus run :
+
+```r
+  # install the network package
+  # install.packages('remotes')
+  remotes::install_github("OHDSI/Strategus")
+```
+
+Instructions To Run Strategus for model development:
+===================
+
+```r
+  library(Strategus)
+
+##=========== START OF INPUTS ==========
+# Add your json file location, connection to OMOP CDM data settings and 
+
+# load the json spec
+url <- "https://raw.githubusercontent.com/ohdsi-studies/lungCancerPrognostic/develop/inst/model_development.json"
+json <- readLines(file(url))
+json2 <- paste(json, collaplse = '\n')
+analysisSpecifications <- ParallelLogger::convertJsonToSettings(json2)
+
+connectionDetailsReference <- "<database ref>"
+
+connectionDetails <- DatabaseConnector::createConnectionDetails(
+  dbms = '<dbms>',
+  server ='<server>',
+  user = '<user>',
+  password = '<password>',
+  port = '<port>'
+)
+
+workDatabaseSchema <- '<your workDatabaseSchema>'
+cdmDatabaseSchema <- '<your cdmDatabaseSchema>'
+
+outputLocation <- '<folder location to run study and output results?'
+minCellCount <- 5
+cohortTableName <- "lung_cancer_develop"
+
+##=========== END OF INPUTS ==========
+
+storeConnectionDetails(
+  connectionDetails = connectionDetails,
+  connectionDetailsReference = connectionDetailsReference
+  )
+
+executionSettings <- createCdmExecutionSettings(
+  connectionDetailsReference = connectionDetailsReference,
+  workDatabaseSchema = workDatabaseSchema,
+  cdmDatabaseSchema = cdmDatabaseSchema,
+  cohortTableNames = CohortGenerator::getCohortTableNames(cohortTable = cohortTableName),
+  workFolder = file.path(outputLocation, "strategusWork"),
+  resultsFolder = file.path(outputLocation, "strategusOutput"),
+  minCellCount = minCellCount
+)
+
+# Note: this environmental variable should be set once for each compute node
+Sys.setenv("INSTANTIATED_MODULES_FOLDER" = file.path(outputLocation, "StrategusInstantiatedModules"))
+
+execute(
+  analysisSpecifications = analysisSpecifications,
+  executionSettings = executionSettings,
+  executionScriptFolder = file.path(outputLocation, "strategusExecution")
+  )
+```
+
+
+Instructions To Run Strategus for model validation:
+===================
+
+```r
+  library(Strategus)
+
+##=========== START OF INPUTS ==========
+# Add your json file location, connection to OMOP CDM data settings and 
+
+# load the json spec
+url <- "https://raw.githubusercontent.com/ohdsi-studies/lungCancerPrognostic/develop/inst/model_validation.json"
+json <- readLines(file(url))
+json2 <- paste(json, collaplse = '\n')
+analysisSpecifications <- ParallelLogger::convertJsonToSettings(json2)
+
+connectionDetailsReference <- "<database ref>"
+
+connectionDetails <- DatabaseConnector::createConnectionDetails(
+  dbms = '<dbms>',
+  server ='<server>',
+  user = '<user>',
+  password = '<password>',
+  port = '<port>'
+)
+
+workDatabaseSchema <- '<your workDatabaseSchema>'
+cdmDatabaseSchema <- '<your cdmDatabaseSchema>'
+
+outputLocation <- '<folder location to run study and output results?'
+minCellCount <- 5
+cohortTableName <- "lung_cancer_val"
+
+##=========== END OF INPUTS ==========
+
+storeConnectionDetails(
+  connectionDetails = connectionDetails,
+  connectionDetailsReference = connectionDetailsReference
+  )
+
+executionSettings <- createCdmExecutionSettings(
+  connectionDetailsReference = connectionDetailsReference,
+  workDatabaseSchema = workDatabaseSchema,
+  cdmDatabaseSchema = cdmDatabaseSchema,
+  cohortTableNames = CohortGenerator::getCohortTableNames(cohortTable = cohortTableName),
+  workFolder = file.path(outputLocation, "strategusWork"),
+  resultsFolder = file.path(outputLocation, "strategusOutput"),
+  minCellCount = minCellCount
+)
+
+# Note: this environmental variable should be set once for each compute node
+Sys.setenv("INSTANTIATED_MODULES_FOLDER" = file.path(outputLocation, "StrategusInstantiatedModules"))
+
+execute(
+  analysisSpecifications = analysisSpecifications,
+  executionSettings = executionSettings,
+  executionScriptFolder = file.path(outputLocation, "strategusExecution")
+  )
+```
 
 Results
 ========================================================
