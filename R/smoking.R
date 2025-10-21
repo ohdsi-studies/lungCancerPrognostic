@@ -32,7 +32,7 @@ createSmokingSettings <-function(
     endDay = endDay,
     analysisId = analysisId
     )
-  attr(covariateSettings, "fun") <- "getSmokingCovariateData"
+  attr(covariateSettings, "fun") <- "lungCancerPrognostic::getSmokingCovariateData"
   class(covariateSettings) <- "covariateSettings"
   return(covariateSettings)
   
