@@ -59,19 +59,11 @@ connectionDetails <- createConnectionDetails(dbms = "postgresql",
  logName = 'skeletonPlp'
  )                                          
 
-execute(databaseDetails = databaseDetails,
+developLungCancerEHRmodel(
+databaseDetails = databaseDetails,
         outputFolder = "c:/temp/study_results", 
         createCohorts = T,
-        runDiagnostic = F,
-        viewDiagnostic = F,
         runAnalyses = T,
-        createValidationPackage = T,
-        useHydra = F,
-        skeletonVersion = 'v1.0.1',
-        packageResults = F,
-        minCellCount = 5,
-        viewShiny = F,
-        sampleSize = 10000,
         logSettings = logSettings
         )
 }

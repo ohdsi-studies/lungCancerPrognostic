@@ -2,6 +2,7 @@
 % Please edit documentation in R/LungCancerPrognostic.R
 \docType{package}
 \name{LungCancerPrognostic}
+\alias{LungCancerPrognostic-package}
 \alias{LungCancerPrognostic}
 \title{LungCancerPrognostic}
 \description{

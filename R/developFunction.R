@@ -88,6 +88,10 @@ developLungCancerEHRmodel <- function(
   
   if(runAnalyses ){
       ParallelLogger::logInfo("Running predictions")
+    
+    # cohorts
+    pathToCsv <- system.file("settings", "CohortsToCreate.csv", package = "LungCancerPrognostic")
+    cohortsToCreate <- utils::read.csv(pathToCsv)
   
    # model design setting
     modelDesign <- PatientLevelPrediction::createModelDesign(
@@ -157,17 +161,14 @@ developLungCancerEHRmodel <- function(
         onlyFetchData =  F,
         cohortDefinitions = data.frame(
           cohortName = unlist(lapply(
-            1:length(predictionAnalysisList$cohortDefinitions), 
-            function(i){predictionAnalysisList$cohortDefinitions[[i]]$name}
+            1:nrow(cohortsToCreate), 
+            function(i){cohortsToCreate$name[i]}
           )), 
           cohortId = unlist(lapply(
-            1:length(predictionAnalysisList$cohortDefinitions), 
-            function(i){predictionAnalysisList$cohortDefinitions[[i]]$id}
+            1:nrow(cohortsToCreate), 
+            function(i){cohortsToCreate$cohortId[i]}
           )), 
-          json = unlist(lapply(
-            1:length(predictionAnalysisList$cohortDefinitions), 
-            function(i){ParallelLogger::convertSettingsToJson(predictionAnalysisList$cohortDefinitions[[i]])}
-          )) 
+          json = '{}' 
                                      
           ),
         logSettings = logSettings,

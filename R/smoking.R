@@ -1,3 +1,26 @@
+#' createSmokingSettings
+#'
+#' @description
+#' Create a covariate setting for the smoking variable (warning: this uses a concept ID that 
+#'  could change as the vocab changes over time)
+#' 
+#' @details
+#' The function creates a list of cohort subset operators based on the specified inputs
+#' @param startDay     The days prior to target index to look for a patient being in the smoking cohort
+#' @param endDay       The days after to target index to look for a patient being in the smoking cohort   
+#' @param analysisId   A covariate analysis ID to use for the smoking feature    
+#' 
+#' @examples
+#' smokingCovSet <- createSmokingSettings(
+#'    startDay = -365,
+#'    endDay = 0,
+#'    analysisId = 639
+#'    )
+#' @return
+#' A covariate setting that will create a smoking covariate based on whether a patient
+#' has observation concept id 40766362 and the value (current, previous, not smoker)
+#' 
+#' @export
 createSmokingSettings <-function(
   startDay = -365,
   endDay = 0,
@@ -31,15 +54,22 @@ createSmokingSettings <-function(
 #'                                                 
 #'
 #' @export
-getSmokingCovariateData <- function(connection,
+getSmokingCovariateData <- function(
+    connectionDetails = NULL,
+    connection,
   oracleTempSchema = NULL,
   cdmDatabaseSchema,
+  cohortDatabaseSchema = cdmDatabaseSchema,
   cohortTable = "#cohort_person",
+  cohortTableIsTemp = TRUE,
   cohortId = -1,
+  cohortIds = c(-1),
   cdmVersion = "5",
   rowIdField = "subject_id",
   covariateSettings,
-  aggregated = FALSE
+  aggregated = FALSE,
+  minCharacterizationMean = 0, 
+  tempEmulationSchema = getOption("sqlRenderTempEmulationSchema")
   ){
   
   
@@ -76,7 +106,13 @@ select p.@row_id_field, o.OBSERVATION_CONCEPT_ID,
     start_day = covariateSettings$startDay,
     end_day = covariateSettings$endDay
     )
-  sql <- SqlRender::translate(sql, targetDialect = attr(connection, "dbms"))
+  
+  sql <- SqlRender::translate(
+    sql = sql, 
+    targetDialect = attr(connection, "dbms"), 
+    tempEmulationSchema = tempEmulationSchema, 
+    oracleTempSchema = oracleTempSchema
+    )
   
   # Retrieve the covariate:
   covariates <- DatabaseConnector::querySql(connection, sql, snakeCaseToCamelCase = TRUE)
@@ -86,7 +122,9 @@ select p.@row_id_field, o.OBSERVATION_CONCEPT_ID,
     covariateId = (1:3)*1000+covariateSettings$analysisId,
     covariateName = c('never-smoker', 'previous_smoker' ,'Smoker'),
     analysisId = rep(covariateSettings$analysisId,3),
-    conceptId = rep(0,3)
+    conceptId = rep(0,3),
+    valueAsConceptId = 0, 
+    collisions = 0
   )
   
   # Construct analysis reference:
