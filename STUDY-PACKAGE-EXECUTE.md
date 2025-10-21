@@ -2,7 +2,7 @@ Instructions To Run Development Study
 ===================
 - Execute the study by running this code:
 ```r
-  library(lungCancerPrognostic)
+  library(LungCancerPrognostic)
   # USER INPUTS
 #=======================
 # The folder where the study intermediate and result files will be written:
@@ -75,7 +75,7 @@ Instructions To Valdiate High Dimentional Lung Cancer Model on new OMOP CDM data
 ===================
 
 ```r
-library(lungCancerPrognostic)
+library(LungCancerPrognostic)
 # USER INPUTS
 #=======================
 # The folder where the study intermediate and result files will be written:
