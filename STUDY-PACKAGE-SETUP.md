@@ -55,7 +55,7 @@ renv::init()
 install.packages('devtools')
 devtools::install_github('ohdsi-studies/lungCancerPrognostic')
 
-library(lungCancerPrognostic)
+library(LungCancerPrognostic)
 ````                                                                                                 
 # -------------------------------------------------------------
 # What to expect
